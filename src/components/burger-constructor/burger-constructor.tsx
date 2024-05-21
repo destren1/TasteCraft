@@ -9,7 +9,7 @@ export const BurgerConstructor: FC = () => {
   const ingredients = useSelector(
     (state: RootState) => state.ingredients.nonBunIngredients
   );
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
+
   const constructorItems = {
     bun: bun,
     ingredients: ingredients
