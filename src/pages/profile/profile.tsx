@@ -1,18 +1,26 @@
+import { updateUserApi } from '@api';
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 
 export const Profile: FC = () => {
-  /** TODO: взять переменную из стора */
-  const user = {
+  const [user, setUser] = useState({
     name: '',
     email: ''
-  };
+  });
+
+  useEffect(() => {
+    const name = localStorage.getItem('name') || '';
+    const email = localStorage.getItem('email') || '';
+    setUser({ name, email });
+  }, [localStorage.getItem('name'), localStorage.getItem('email')]);
 
   const [formValue, setFormValue] = useState({
     name: user.name,
     email: user.email,
     password: ''
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     setFormValue((prevState) => ({
@@ -29,6 +37,16 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    localStorage.setItem('name', formValue.name);
+    localStorage.setItem('email', formValue.email);
+    setIsSubmitting(true);
+
+    const user = {
+      name: formValue.name,
+      email: formValue.email,
+      password: formValue.password
+    };
+    updateUserApi(user).finally(() => setIsSubmitting(false));
   };
 
   const handleCancel = (e: SyntheticEvent) => {
@@ -49,6 +67,7 @@ export const Profile: FC = () => {
 
   return (
     <ProfileUI
+      isSubmitting={isSubmitting}
       formValue={formValue}
       isFormChanged={isFormChanged}
       handleCancel={handleCancel}
@@ -56,6 +75,4 @@ export const Profile: FC = () => {
       handleInputChange={handleInputChange}
     />
   );
-
-  return null;
 };
