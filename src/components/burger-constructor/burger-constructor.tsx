@@ -1,10 +1,11 @@
-import { FC, useMemo } from 'react';
-import { TConstructorIngredient } from '@utils-types';
+import { FC, useMemo, useState, useEffect } from 'react';
+import { TConstructorIngredient, TOrder } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from 'src/services/store';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getUser } from '../../services/slices/userSlice';
+import { orderBurger } from '../../services/slices/ingredientsSlice';
 
 export const BurgerConstructor: FC = () => {
   const bun = useSelector((state: RootState) => state.ingredients.bun);
@@ -14,29 +15,45 @@ export const BurgerConstructor: FC = () => {
   const isAuthorized = useSelector(
     (state: RootState) => state.user.isAuthorized
   );
+  let orderRequest = useSelector(
+    (state: RootState) => state.ingredients.orderRequest
+  );
+  const ingredientsId = useSelector(
+    (state: RootState) => state.ingredients.ingredientsId
+  );
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
-  const location = useLocation();
 
   const constructorItems = {
     bun: bun,
     ingredients: ingredients
   };
 
-  const orderRequest = false;
+  const [orderModalData, setOrderModalData] = useState<TOrder | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const orderModalData = null;
+  useEffect(() => {
+    dispatch(getUser());
+  }, []);
 
   const onOrderClick = () => {
-    dispatch(getUser());
     if (!isAuthorized) {
       navigate('/login');
     } else {
-      navigate('/feed/:number', { state: { backgroundLocation: location } });
+      dispatch(orderBurger(ingredientsId))
+        .unwrap()
+        .then((response) => {
+          setOrderModalData(response.order);
+          setIsModalOpen(true);
+        })
+        .catch((err) => console.log(`Произошла ошибка: ${err}`));
     }
   };
 
-  const closeOrderModal = () => {};
+  const closeOrderModal = () => {
+    setOrderModalData(null);
+    setIsModalOpen(false);
+  };
 
   const price = useMemo(
     () =>
@@ -50,6 +67,7 @@ export const BurgerConstructor: FC = () => {
 
   return (
     <BurgerConstructorUI
+      isModalOpen={isModalOpen}
       price={price}
       orderRequest={orderRequest}
       constructorItems={constructorItems}

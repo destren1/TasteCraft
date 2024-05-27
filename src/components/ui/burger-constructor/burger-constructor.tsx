@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'src/services/store';
 
 export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
+  isModalOpen,
   constructorItems,
   orderRequest,
   price,
@@ -56,14 +57,20 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
       <ul className={styles.elements}>
         {constructorItems.ingredients.length > 0 ? (
           constructorItems.ingredients.map(
-            (item: TConstructorIngredient, index: number) => (
-              <BurgerConstructorElement
-                ingredient={item}
-                index={index}
-                totalItems={constructorItems.ingredients.length}
-                key={item.id}
-              />
-            )
+            (item: TConstructorIngredient, index: number) => {
+              const nonBunIngredientIndex = ingredients.findIndex(
+                (ingredient) => ingredient._id === item._id
+              );
+              return (
+                <BurgerConstructorElement
+                  nonBunIngredientIndex={nonBunIngredientIndex}
+                  ingredient={item}
+                  index={index}
+                  totalItems={constructorItems.ingredients.length}
+                  key={item.id}
+                />
+              );
+            }
           )
         ) : (
           <div
@@ -111,7 +118,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
         </Modal>
       )}
 
-      {orderModalData && (
+      {isModalOpen && orderModalData && (
         <Modal
           onClose={closeOrderModal}
           title={orderRequest ? 'Оформляем заказ...' : ''}

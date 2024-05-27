@@ -27,10 +27,38 @@ const App = () => {
       <Routes location={backgroundLocation || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/forgot-password' element={<ForgotPassword />} />
-        <Route path='/reset-password' element={<ResetPassword />} />
+        <Route
+          path='/login'
+          element={
+            <PrivateRoute>
+              <Login />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/register'
+          element={
+            <PrivateRoute>
+              <Register />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/forgot-password'
+          element={
+            <PrivateRoute>
+              <ForgotPassword />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/reset-password'
+          element={
+            <PrivateRoute>
+              <ResetPassword />
+            </PrivateRoute>
+          }
+        />
         <Route
           path='/profile'
           element={
