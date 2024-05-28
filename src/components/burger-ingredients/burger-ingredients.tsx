@@ -3,14 +3,11 @@ import { useInView } from 'react-intersection-observer';
 
 import { TIngredient, TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from 'src/services/store';
-import { getIngredients } from '../../services/slices/ingredientsSlice';
+import { useSelector } from '../../services/store';
 
 export const BurgerIngredients: FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const ingredients: TIngredient[] = useSelector(
-    (state: RootState) => state.ingredients.ingredients
+    (state) => state.ingredients.ingredients
   );
 
   const buns: TIngredient[] = ingredients.filter(
@@ -41,7 +38,6 @@ export const BurgerIngredients: FC = () => {
   });
 
   useEffect(() => {
-    dispatch(getIngredients());
     if (inViewBuns) {
       setCurrentTab('bun');
     } else if (inViewSauces) {

@@ -15,11 +15,15 @@ import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { PrivateRoute } from '../privateRoute/privateRoute';
+import { useDispatch } from '../../services/store';
+import { getIngredients } from '../../services/slices/ingredientsSlice';
 
 const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const backgroundLocation = location.state?.background;
+  const dispatch = useDispatch();
+  dispatch(getIngredients());
 
   return (
     <div className={styles.app}>

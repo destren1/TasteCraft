@@ -7,10 +7,9 @@ import {
 import styles from '../common.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { RegisterUIProps } from './type';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../../../services/store';
 import { registerUser } from '../../../../services/slices/userSlice';
 import { TRegisterData } from '@api';
-import { AppDispatch } from 'src/services/store';
 
 export const RegisterUI: FC<RegisterUIProps> = ({
   errorText,
@@ -23,7 +22,7 @@ export const RegisterUI: FC<RegisterUIProps> = ({
   setUserName
 }) => {
   const [buttonState, setButtonState] = useState(true);
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const userRegisterData: TRegisterData = {
     email: email,

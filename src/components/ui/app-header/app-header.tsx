@@ -8,12 +8,11 @@ import {
   ProfileIcon
 } from '@zlden/react-developer-burger-ui-components';
 import { NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from 'src/services/store';
+import { useDispatch } from '../../../services/store';
 import { getUser } from '../../../services/slices/userSlice';
 
 export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useDispatch();
   const handleCheckAuth = () => {
     dispatch(getUser());
   };

@@ -2,19 +2,18 @@ import { FC, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
-import { useSelector } from 'react-redux';
-import { RootState } from 'src/services/store';
+import { useSelector } from '../../services/store';
 import { useParams } from 'react-router-dom';
 
 export const OrderInfo: FC = () => {
   const { number } = useParams();
-  const orders = useSelector((state: RootState) => state.ingredients.orders);
+  const orders = useSelector((state) => state.ingredients.orders);
   const orderData = number
     ? orders.find((order) => order.number === +number)
     : undefined;
 
   const ingredients: TIngredient[] = useSelector(
-    (state: RootState) => state.ingredients.ingredients
+    (state) => state.ingredients.ingredients
   );
 
   /* Готовим данные для отображения */

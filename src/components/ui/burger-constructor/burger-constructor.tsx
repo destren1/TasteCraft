@@ -9,8 +9,7 @@ import { BurgerConstructorUIProps } from './type';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorElement, Modal } from '@components';
 import { Preloader, OrderDetailsUI } from '@ui';
-import { useSelector } from 'react-redux';
-import { RootState } from 'src/services/store';
+import { useSelector } from '../../../services/store';
 
 export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   isModalOpen,
@@ -22,9 +21,9 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   closeOrderModal
 }) => {
   const [buttonActivity, setButtonActivity] = useState(true);
-  const bun = useSelector((state: RootState) => state.ingredients.bun);
+  const bun = useSelector((state) => state.ingredients.bun);
   const ingredients = useSelector(
-    (state: RootState) => state.ingredients.nonBunIngredients
+    (state) => state.ingredients.nonBunIngredients
   );
 
   useEffect(() => {

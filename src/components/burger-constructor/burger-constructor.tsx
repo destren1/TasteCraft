@@ -1,28 +1,22 @@
 import { FC, useMemo, useState, useEffect } from 'react';
 import { TConstructorIngredient, TOrder } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from 'src/services/store';
+import { AppDispatch } from 'src/services/store';
 import { useNavigate } from 'react-router-dom';
 import { getUser } from '../../services/slices/userSlice';
 import { orderBurger } from '../../services/slices/ingredientsSlice';
+import { useSelector, useDispatch } from '../../services/store';
 
 export const BurgerConstructor: FC = () => {
-  const bun = useSelector((state: RootState) => state.ingredients.bun);
+  const bun = useSelector((state) => state.ingredients.bun);
   const ingredients = useSelector(
-    (state: RootState) => state.ingredients.nonBunIngredients
+    (state) => state.ingredients.nonBunIngredients
   );
-  const isAuthorized = useSelector(
-    (state: RootState) => state.user.isAuthorized
-  );
-  let orderRequest = useSelector(
-    (state: RootState) => state.ingredients.orderRequest
-  );
-  const ingredientsId = useSelector(
-    (state: RootState) => state.ingredients.ingredientsId
-  );
+  const isAuthorized = useSelector((state) => state.user.isAuthorized);
+  let orderRequest = useSelector((state) => state.ingredients.orderRequest);
+  const ingredientsId = useSelector((state) => state.ingredients.ingredientsId);
   const navigate = useNavigate();
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const constructorItems = {
     bun: bun,

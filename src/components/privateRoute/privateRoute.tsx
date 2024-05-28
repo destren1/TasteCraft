@@ -1,7 +1,6 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/store';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { RootState } from 'src/services/store';
 import { Preloader } from '../ui/preloader';
 import { useEffect } from 'react';
 import { resetLogout } from '../../services/slices/userSlice';
@@ -11,12 +10,10 @@ interface PrivateRouteProps {
 }
 
 export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
-  let isLogout = useSelector((state: RootState) => state.user.logout);
+  let isLogout = useSelector((state) => state.user.logout);
   const navigate = useNavigate();
-  const isLoading = useSelector((state: RootState) => state.user.isLoading);
-  const isAuthorized = useSelector(
-    (state: RootState) => state.user.isAuthorized
-  );
+  const isLoading = useSelector((state) => state.user.isLoading);
+  const isAuthorized = useSelector((state) => state.user.isAuthorized);
   const location = useLocation();
   const dispatch = useDispatch();
 
