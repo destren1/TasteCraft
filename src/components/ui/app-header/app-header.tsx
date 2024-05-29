@@ -33,7 +33,7 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => {
             <NavLink
               onClick={handleCheckAuth}
               className={styles.link}
-              to='/profile/orders'
+              to='/feed'
             >
               <ListIcon type={'primary'} />
               <p className='text text_type_main-default ml-2'>Лента заказов</p>

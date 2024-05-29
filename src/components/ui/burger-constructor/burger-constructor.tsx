@@ -10,6 +10,7 @@ import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorElement, Modal } from '@components';
 import { Preloader, OrderDetailsUI } from '@ui';
 import { useSelector } from '../../../services/store';
+import { v4 as uuidv4 } from 'uuid';
 
 export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   isModalOpen,
@@ -25,6 +26,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   const ingredients = useSelector(
     (state) => state.ingredients.nonBunIngredients
   );
+  const uniqueId = uuidv4();
 
   useEffect(() => {
     if (bun && ingredients.length > 0) {
@@ -66,7 +68,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
                   ingredient={item}
                   index={index}
                   totalItems={constructorItems.ingredients.length}
-                  key={item.id}
+                  key={uniqueId}
                 />
               );
             }

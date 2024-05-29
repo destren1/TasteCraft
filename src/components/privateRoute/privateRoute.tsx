@@ -35,7 +35,9 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
     location.pathname !== '/forgot-password' &&
     location.pathname !== '/reset-password'
   ) {
-    return <Navigate to='/login' />;
+    return (
+      <Navigate to='/login' state={{ previousRoute: location.pathname }} />
+    );
   }
 
   return children;

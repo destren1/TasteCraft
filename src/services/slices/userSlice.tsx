@@ -11,13 +11,9 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { deleteCookie, setCookie } from '../../utils/cookie';
 
 export const logout = createAsyncThunk('user/logout', async () => {
-  try {
-    await logoutApi();
-    localStorage.clear();
-    deleteCookie('accessToken');
-  } catch (error) {
-    console.log(error);
-  }
+  await logoutApi();
+  localStorage.clear();
+  deleteCookie('accessToken');
 });
 
 export const getUser = createAsyncThunk('user/checkAuth', async () =>
