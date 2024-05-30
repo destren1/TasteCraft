@@ -2,7 +2,9 @@ import {
   TNewOrderResponse,
   getIngredientsApi,
   getOrdersApi,
-  orderBurgerApi
+  orderBurgerApi,
+  getFeedsApi,
+  TFeedsResponse
 } from '@api';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
@@ -13,6 +15,10 @@ export const getIngredients = createAsyncThunk('ingredients/getAll', async () =>
 
 export const getOrders = createAsyncThunk('ingredients/getOrders', async () =>
   getOrdersApi()
+);
+
+export const getFeeds = createAsyncThunk('ingredients/getFeeds', async () =>
+  getFeedsApi()
 );
 
 export const orderBurger = createAsyncThunk(
@@ -28,6 +34,7 @@ interface IIngredients {
   orderRequest: boolean;
   responseData: TNewOrderResponse;
   orders: TOrder[];
+  feeds: TFeedsResponse;
 }
 
 const initialState: IIngredients = {
@@ -37,7 +44,8 @@ const initialState: IIngredients = {
   ingredientsId: [],
   orderRequest: false,
   responseData: { success: false, order: {} as TOrder, name: '' },
-  orders: []
+  orders: [],
+  feeds: { success: false, orders: [], total: 0, totalToday: 0 }
 };
 
 const ingredientsSlice = createSlice({
@@ -106,8 +114,19 @@ const ingredientsSlice = createSlice({
         state.bun = null;
         state.ingredientsId = [];
       })
+      .addCase(getOrders.rejected, (state, action) => {
+        console.log(action.error);
+      })
       .addCase(getOrders.fulfilled, (state, action) => {
         state.orders = action.payload;
+      })
+      .addCase(getFeeds.rejected, (state, action) => {
+        console.log('getFeeds/rejected');
+        console.log(action.error);
+      })
+      .addCase(getFeeds.fulfilled, (state, action) => {
+        state.feeds = action.payload;
+        console.log('getFeeds/success');
       });
   }
 });

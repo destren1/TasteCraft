@@ -1,9 +1,7 @@
 import { FC, useMemo, useState, useEffect } from 'react';
 import { TConstructorIngredient, TOrder } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
-import { AppDispatch } from 'src/services/store';
 import { useNavigate } from 'react-router-dom';
-import { getUser } from '../../services/slices/userSlice';
 import { orderBurger } from '../../services/slices/ingredientsSlice';
 import { useSelector, useDispatch } from '../../services/store';
 
@@ -25,10 +23,6 @@ export const BurgerConstructor: FC = () => {
 
   const [orderModalData, setOrderModalData] = useState<TOrder | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    dispatch(getUser());
-  }, []);
 
   const onOrderClick = () => {
     if (!isAuthorized) {

@@ -10,11 +10,7 @@ import {
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { deleteCookie, setCookie } from '../../utils/cookie';
 
-export const logout = createAsyncThunk('user/logout', async () => {
-  await logoutApi();
-  localStorage.clear();
-  deleteCookie('accessToken');
-});
+export const logout = createAsyncThunk('user/logout', async () => logoutApi());
 
 export const getUser = createAsyncThunk('user/checkAuth', async () =>
   getUserApi()
@@ -22,15 +18,7 @@ export const getUser = createAsyncThunk('user/checkAuth', async () =>
 
 export const loginUser = createAsyncThunk(
   'user/login',
-  async (data: TLoginData) => {
-    const response = await loginUserApi(data);
-    const { refreshToken, accessToken, user } = response;
-    setCookie('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
-    localStorage.setItem('name', user.name);
-    localStorage.setItem('email', user.email);
-    return { refreshToken, accessToken, user };
-  }
+  async (data: TLoginData) => loginUserApi(data)
 );
 
 export const registerUser = createAsyncThunk(
@@ -73,7 +61,7 @@ const userSlice = createSlice({
       .addCase(getUser.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getUser.rejected, (state) => {
+      .addCase(getUser.rejected, (state, action) => {
         state.isLoading = false;
         state.isAuthorized = false;
       })
@@ -88,10 +76,14 @@ const userSlice = createSlice({
         state.success = false;
         state.isAuthorized = false;
       })
-      .addCase(loginUser.fulfilled, (state) => {
+      .addCase(loginUser.fulfilled, (state, action) => {
         state.success = true;
         state.isLoading = false;
         state.isAuthorized = true;
+        setCookie('accessToken', action.payload.accessToken);
+        localStorage.setItem('refreshToken', action.payload.refreshToken);
+        localStorage.setItem('name', action.payload.user.name);
+        localStorage.setItem('email', action.payload.user.email);
       })
       .addCase(logout.rejected, (state) => {
         state.logout = false;
@@ -99,6 +91,8 @@ const userSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.logout = true;
         state.isAuthorized = false;
+        localStorage.clear();
+        deleteCookie('accessToken');
       });
   }
 });

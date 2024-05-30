@@ -17,6 +17,8 @@ import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { PrivateRoute } from '../privateRoute/privateRoute';
 import { useDispatch } from '../../services/store';
 import { getIngredients } from '../../services/slices/ingredientsSlice';
+import { getUser } from '../../services/slices/userSlice';
+import { useEffect } from 'react';
 
 const App = () => {
   const navigate = useNavigate();
@@ -24,6 +26,10 @@ const App = () => {
   const backgroundLocation = location.state?.background;
   const dispatch = useDispatch();
   dispatch(getIngredients());
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
 
   return (
     <div className={styles.app}>
