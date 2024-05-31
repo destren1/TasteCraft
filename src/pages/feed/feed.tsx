@@ -13,7 +13,6 @@ export const Feed: FC = () => {
   useEffect(() => {
     setIsLoading(true);
     dispatch(getFeeds()).finally(() => setIsLoading(false));
-    dispatch(getOrders());
   }, [dispatch]);
 
   const handleUpdateFeeds = () => {

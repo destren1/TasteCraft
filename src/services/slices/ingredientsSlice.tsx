@@ -58,8 +58,13 @@ const ingredientsSlice = createSlice({
         (ingredient) => ingredient._id === _id && ingredient.type === 'bun'
       );
       if (bunIngredient) {
-        state.ingredientsId.push(_id);
-        state.ingredientsId.push(_id);
+        state.ingredientsId = state.ingredientsId.filter((id) => {
+          const ingredient = state.ingredients.find(
+            (ingredient) => ingredient._id === id
+          );
+          return !ingredient || ingredient.type !== 'bun';
+        });
+        state.ingredientsId.push(_id, _id);
       } else {
         state.ingredientsId.push(_id);
       }

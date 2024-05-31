@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 
 export const OrderInfo: FC = () => {
   const { number } = useParams();
-  const orders = useSelector((state) => state.ingredients.orders);
+  const orders = useSelector((state) => state.ingredients.feeds.orders);
   const orderData = number
     ? orders.find((order) => order.number === +number)
     : undefined;
