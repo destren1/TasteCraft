@@ -8,6 +8,7 @@ import { ProfileUIProps } from './type';
 import { ProfileMenu } from '@components';
 
 export const ProfileUI: FC<ProfileUIProps> = ({
+  isSubmitting,
   formValue,
   isFormChanged,
   updateUserError,
@@ -63,7 +64,7 @@ export const ProfileUI: FC<ProfileUIProps> = ({
             icon={'EditIcon'}
           />
         </div>
-        {isFormChanged && (
+        {isFormChanged && !isSubmitting && (
           <div className={styles.button}>
             <Button
               type='secondary'

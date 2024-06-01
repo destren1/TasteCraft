@@ -1,6 +1,7 @@
 import { ChangeEvent, SyntheticEvent } from 'react';
 
 export type ProfileUIProps = {
+  isSubmitting: boolean;
   formValue: {
     name: string;
     email: string;

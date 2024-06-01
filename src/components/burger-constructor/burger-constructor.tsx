@@ -1,24 +1,47 @@
-import { FC, useMemo } from 'react';
-import { TConstructorIngredient } from '@utils-types';
+import { FC, useMemo, useState, useEffect } from 'react';
+import { TConstructorIngredient, TOrder } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
+import { useNavigate } from 'react-router-dom';
+import { orderBurger } from '../../services/slices/ingredientsSlice';
+import { useSelector, useDispatch } from '../../services/store';
 
 export const BurgerConstructor: FC = () => {
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
+  const bun = useSelector((state) => state.ingredients.bun);
+  const ingredients = useSelector(
+    (state) => state.ingredients.nonBunIngredients
+  );
+  const isAuthorized = useSelector((state) => state.user.isAuthorized);
+  let orderRequest = useSelector((state) => state.ingredients.orderRequest);
+  const ingredientsId = useSelector((state) => state.ingredients.ingredientsId);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const constructorItems = {
-    bun: {
-      price: 0
-    },
-    ingredients: []
+    bun: bun,
+    ingredients: ingredients
   };
 
-  const orderRequest = false;
-
-  const orderModalData = null;
+  const [orderModalData, setOrderModalData] = useState<TOrder | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onOrderClick = () => {
-    if (!constructorItems.bun || orderRequest) return;
+    if (!isAuthorized) {
+      navigate('/login');
+    } else {
+      dispatch(orderBurger(ingredientsId))
+        .unwrap()
+        .then((response) => {
+          setOrderModalData(response.order);
+          setIsModalOpen(true);
+        })
+        .catch((err) => console.log(`Произошла ошибка: ${err}`));
+    }
   };
-  const closeOrderModal = () => {};
+
+  const closeOrderModal = () => {
+    setOrderModalData(null);
+    setIsModalOpen(false);
+  };
 
   const price = useMemo(
     () =>
@@ -30,10 +53,9 @@ export const BurgerConstructor: FC = () => {
     [constructorItems]
   );
 
-  return null;
-
   return (
     <BurgerConstructorUI
+      isModalOpen={isModalOpen}
       price={price}
       orderRequest={orderRequest}
       constructorItems={constructorItems}
