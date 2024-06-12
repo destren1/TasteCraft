@@ -5,7 +5,7 @@ import {
   orderBurgerApi,
   getFeedsApi,
   TFeedsResponse
-} from '@api';
+} from '../../utils/burger-api';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
 
@@ -26,7 +26,7 @@ export const orderBurger = createAsyncThunk(
   async (data: string[] | string) => orderBurgerApi(data)
 );
 
-interface IIngredients {
+export interface IIngredients {
   bun: TIngredient | null | undefined;
   nonBunIngredients: TConstructorIngredient[];
   ingredients: TIngredient[];
@@ -37,7 +37,7 @@ interface IIngredients {
   feeds: TFeedsResponse;
 }
 
-const initialState: IIngredients = {
+export const initialState: IIngredients = {
   bun: null,
   nonBunIngredients: [],
   ingredients: [],
@@ -119,19 +119,11 @@ const ingredientsSlice = createSlice({
         state.bun = null;
         state.ingredientsId = [];
       })
-      .addCase(getOrders.rejected, (state, action) => {
-        console.log(action.error);
-      })
       .addCase(getOrders.fulfilled, (state, action) => {
         state.orders = action.payload;
       })
-      .addCase(getFeeds.rejected, (state, action) => {
-        console.log('getFeeds/rejected');
-        console.log(action.error);
-      })
       .addCase(getFeeds.fulfilled, (state, action) => {
         state.feeds = action.payload;
-        console.log('getFeeds/success');
       });
   }
 });

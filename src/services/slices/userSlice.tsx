@@ -6,7 +6,7 @@ import {
   loginUserApi,
   TLoginData,
   logoutApi
-} from '@api';
+} from '../../utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { deleteCookie, setCookie } from '../../utils/cookie';
 
@@ -35,7 +35,7 @@ interface IUser {
   logout: boolean;
 }
 
-const initialState: IUser = {
+export const initialState: IUser = {
   isLoading: true,
   isAuthorized: false,
   data: {
@@ -61,7 +61,7 @@ const userSlice = createSlice({
       .addCase(getUser.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getUser.rejected, (state, action) => {
+      .addCase(getUser.rejected, (state) => {
         state.isLoading = false;
         state.isAuthorized = false;
       })

@@ -35,7 +35,10 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   }, [bun, ingredients]);
 
   return (
-    <section className={styles.burger_constructor}>
+    <section
+      data-cy='selectedIngredients'
+      className={styles.burger_constructor}
+    >
       {constructorItems.bun ? (
         <div className={`${styles.element} mb-4 mr-4`}>
           <ConstructorElement
