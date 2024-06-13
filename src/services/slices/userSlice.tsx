@@ -6,9 +6,9 @@ import {
   loginUserApi,
   TLoginData,
   logoutApi
-} from '@api';
+} from '../../utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { deleteCookie, setCookie } from '../../utils/cookie';
+import { deleteCookie } from '../../utils/cookie';
 
 export const logout = createAsyncThunk('user/logout', async () => logoutApi());
 
@@ -27,7 +27,7 @@ export const registerUser = createAsyncThunk(
     registerUserApi({ email, name, password })
 );
 
-interface IUser {
+export interface IUser {
   isLoading: boolean;
   isAuthorized: boolean;
   data: TAuthResponse;
@@ -35,7 +35,7 @@ interface IUser {
   logout: boolean;
 }
 
-const initialState: IUser = {
+export const initialState: IUser = {
   isLoading: true,
   isAuthorized: false,
   data: {
@@ -61,7 +61,7 @@ const userSlice = createSlice({
       .addCase(getUser.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getUser.rejected, (state, action) => {
+      .addCase(getUser.rejected, (state) => {
         state.isLoading = false;
         state.isAuthorized = false;
       })
@@ -80,10 +80,6 @@ const userSlice = createSlice({
         state.success = true;
         state.isLoading = false;
         state.isAuthorized = true;
-        setCookie('accessToken', action.payload.accessToken);
-        localStorage.setItem('refreshToken', action.payload.refreshToken);
-        localStorage.setItem('name', action.payload.user.name);
-        localStorage.setItem('email', action.payload.user.email);
       })
       .addCase(logout.rejected, (state) => {
         state.logout = false;
@@ -91,8 +87,6 @@ const userSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.logout = true;
         state.isAuthorized = false;
-        localStorage.clear();
-        deleteCookie('accessToken');
       });
   }
 });

@@ -8,7 +8,7 @@ import {
 import ingredientsSlice from './slices/ingredientsSlice';
 import userSlice from './slices/userSlice';
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   ingredients: ingredientsSlice,
   user: userSlice
 });
