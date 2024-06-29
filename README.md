@@ -4,7 +4,7 @@
 
 <p align="Left">Многостраничный веб-сайт для создания космических бургеров.</p>
 
-<a  href="" target="_blank" align="center"><img src="./src/images/blog-custom-gif.gif" width="100%" alt="Гифка с обзором сайта"></a>
+<a  href="" target="_blank" align="center"><img src="./src/images/Burger.gif" width="100%" alt="Гифка с обзором сайта"></a>
 
 [Открыть в браузере](https://destren1.github.io/blog-customizer/)
 
