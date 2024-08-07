@@ -1,4 +1,4 @@
-# Stellar-burger
+# TasteCraft
 
 ## Краткое описание
 
